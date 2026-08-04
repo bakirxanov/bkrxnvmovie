@@ -1,23 +1,13 @@
 import CatalogGrid from "@/components/CatalogGrid";
-import { getBaseUrl } from "@/lib/getBaseUrl";
-import type { Movie } from "@/types/movie";
+import { getAllMovies } from "@/lib/data/movies";
 
-// This is a Server Component, so we can use async/await directly in it.
-// It fetches the movies list from our own API route on every request.
-async function getMovies(): Promise<Movie[]> {
-  const res = await fetch(`${getBaseUrl()}/api/movies`, {
-    cache: "no-store", // always get fresh data
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch movies");
-  }
-
-  return res.json();
-}
-
-export default async function MoviesPage() {
-  const movies = await getMovies();
+// Server Component: reads the in-memory "database" directly. No network
+// round-trip to our own API is needed for internal rendering, which keeps
+// this fast and avoids the classic "fetch to localhost fails in
+// production" bug when this project deploys somewhere other than
+// localhost:3000 (e.g. Vercel).
+export default function MoviesPage() {
+  const movies = getAllMovies();
 
   return (
     <div className="container">

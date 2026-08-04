@@ -1,8 +1,8 @@
 import Link from "next/link";
-import type { Movie } from "@/types/movie";
+import type { CatalogItem } from "@/types/movie";
 
 interface MovieCardProps {
-  movie: Movie;
+  movie: CatalogItem;
   category: string; // e.g. "movies", "serials", "cartoons", "premieres"
 }
 

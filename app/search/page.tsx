@@ -1,17 +1,14 @@
 import MovieCard from "@/components/MovieCard";
-import { getBaseUrl } from "@/lib/getBaseUrl";
-import type { Movie } from "@/types/movie";
+import { getAllMovies } from "@/lib/data/movies";
+import { getAllSerials } from "@/lib/data/serials";
+import { getAllCartoons } from "@/lib/data/cartoons";
+import { getAllPremieres } from "@/lib/data/premieres";
+import type { CatalogItem } from "@/types/movie";
 
 interface CategoryResult {
   category: string;
   label: string;
-  items: Movie[];
-}
-
-async function getCategory(path: string): Promise<Movie[]> {
-  const res = await fetch(`${getBaseUrl()}/api/${path}`, { cache: "no-store" });
-  if (!res.ok) return [];
-  return res.json();
+  items: CatalogItem[];
 }
 
 export default async function SearchPage({
@@ -22,18 +19,11 @@ export default async function SearchPage({
   const { q } = await searchParams;
   const query = (q ?? "").trim();
 
-  const [movies, serials, cartoons, premieres] = await Promise.all([
-    getCategory("movies"),
-    getCategory("serials"),
-    getCategory("cartoons"),
-    getCategory("premieres"),
-  ]);
-
   const source: CategoryResult[] = [
-    { category: "movies", label: "Kinolar", items: movies },
-    { category: "serials", label: "Seriallar", items: serials },
-    { category: "cartoons", label: "Multfilmlar", items: cartoons },
-    { category: "premieres", label: "Premyeralar", items: premieres },
+    { category: "movies", label: "Kinolar", items: getAllMovies() },
+    { category: "serials", label: "Seriallar", items: getAllSerials() },
+    { category: "cartoons", label: "Multfilmlar", items: getAllCartoons() },
+    { category: "premieres", label: "Premyeralar", items: getAllPremieres() },
   ];
 
   const lowerQuery = query.toLowerCase();

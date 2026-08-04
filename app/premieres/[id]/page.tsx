@@ -1,20 +1,6 @@
 import { notFound } from "next/navigation";
 import MovieDetail from "@/components/MovieDetail";
-import { getBaseUrl } from "@/lib/getBaseUrl";
-import type { Movie } from "@/types/movie";
-
-async function getPremiere(id: string): Promise<Movie | undefined> {
-  const res = await fetch(`${getBaseUrl()}/api/premieres`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch premieres");
-  }
-
-  const premieres: Movie[] = await res.json();
-  return premieres.find((p) => p.id === Number(id));
-}
+import { getPremiereById } from "@/lib/data/premieres";
 
 export default async function PremiereDetailsPage({
   params,
@@ -22,7 +8,7 @@ export default async function PremiereDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const premiere = await getPremiere(id);
+  const premiere = getPremiereById(Number(id));
 
   if (!premiere) {
     notFound();

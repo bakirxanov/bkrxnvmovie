@@ -1,22 +1,8 @@
 import CatalogGrid from "@/components/CatalogGrid";
-import { getBaseUrl } from "@/lib/getBaseUrl";
-import type { Movie } from "@/types/movie";
+import { getAllPremieres } from "@/lib/data/premieres";
 
-// Server Component that fetches the premieres list from our own API route.
-async function getPremieres(): Promise<Movie[]> {
-  const res = await fetch(`${getBaseUrl()}/api/premieres`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch premieres");
-  }
-
-  return res.json();
-}
-
-export default async function PremieresPage() {
-  const premieres = await getPremieres();
+export default function PremieresPage() {
+  const premieres = getAllPremieres();
 
   return (
     <div className="container">

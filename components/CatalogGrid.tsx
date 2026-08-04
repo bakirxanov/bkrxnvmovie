@@ -2,10 +2,10 @@
 
 import { useMemo, useState } from "react";
 import MovieCard from "@/components/MovieCard";
-import type { Movie } from "@/types/movie";
+import type { CatalogItem } from "@/types/movie";
 
 interface CatalogGridProps {
-  items: Movie[];
+  items: CatalogItem[];
   category: string; // e.g. "movies", "serials", "cartoons", "premieres"
   emptyLabel: string;
 }
